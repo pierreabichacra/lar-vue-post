@@ -22,5 +22,5 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::prefix('/post')->group(function () {
     Route::post('/store', [PostController::class, 'store']);
     Route::put('/{id}', [PostController::class, 'update']);
-    Route::delete('/{id}', [PostController::class, 'destroy']);
+    Route::delete('/{id}/{auth_id}', [PostController::class, 'destroy']);
 });

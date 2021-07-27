@@ -94,10 +94,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id, $auth_id)
     {
         $existing_post = Posts::find($id);
-        if($existing_post &&  $existing_post->author_id == $request->post["author_id"] ){
+
+        if($existing_post &&  $existing_post->author_id == $auth_id ){
             $existing_post->delete();
             return "Deleted";
         }else{
