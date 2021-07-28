@@ -1,7 +1,8 @@
 <template>
   <div class="add">
     <div class="button">
-      <button @click="editPostVisible = !editPostVisible">edit</button>
+<!--      <button @click="editPostVisible = !editPostVisible">edit</button>-->
+      <a-icon class="shadow-custom" style="font-size: 25px"  type="edit" @click="editPostVisible = !editPostVisible"/>
     </div>
     <a-modal v-model="editPostVisible" title="Edit Post" :footer="null">
       <a-form
@@ -23,7 +24,7 @@
           />
         </a-form-item>
         <a-form-item label="Content">
-          <a-input
+          <a-textarea
             v-decorator="[
               'content',
               {
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+
 export default {
   name: "EditButton",
   props: {
@@ -76,15 +78,22 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.author_id = -1;
+          values.author_id = this.$session.get('user').id;
           this.axios
             .put(`http://127.0.0.1:8000/api/post/${this.id}`, {
               post: values,
             })
             .then((result) => {
               console.log(result);
-              this.editPostVisible = false;
-              this.$emit("getData");
+              if(result.data.message){
+                this.$message.error(result.data.message);
+                this.editPostVisible = false;
+
+              }else{
+                this.editPostVisible = false;
+                this.$emit("getData");
+              }
+
             });
           console.log("Received values of form: ", values);
         }
@@ -93,3 +102,11 @@ export default {
   },
 };
 </script>
+
+<style>
+.shadow-custom:hover{
+  -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
+  filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
+
+}
+</style>

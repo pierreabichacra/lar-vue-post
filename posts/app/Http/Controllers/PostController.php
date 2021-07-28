@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Posts;
+use Illuminate\Support\Facades\DB;
 
 
 class PostController extends Controller
@@ -15,7 +16,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Posts::orderBy('created_at', 'DESC')->get();
+       $posts = DB::table('posts')
+             ->leftJoin('users', 'posts.author_id', '=', 'users.id')
+            ->select('users.name', 'posts.*', )
+            ->get();
+            return $posts;
     }
 
     /**
@@ -84,7 +89,7 @@ class PostController extends Controller
             $existing_post->save();
             return $existing_post;
         }else{
-            return "Error";
+            return response()->json(["message"=> " Not allowed to do this action. "], 200);
         }
     }
 
@@ -102,7 +107,7 @@ class PostController extends Controller
             $existing_post->delete();
             return "Deleted";
         }else{
-           return  "error";
+           return response()->json(["message"=> " Not allowed to do this action. "], 200);
         }
     }
 }

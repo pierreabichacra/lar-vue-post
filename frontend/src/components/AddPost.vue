@@ -31,7 +31,7 @@
           />
         </a-form-item>
         <a-form-item label="Content">
-          <a-input
+          <a-textarea
             v-decorator="[
               'content',
               {
@@ -69,7 +69,7 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.author_id = -1;
+          values.author_id = this.$session.get('user').id;
           this.axios
             .post(`http://127.0.0.1:8000/api/post/store`, {
               post: values,
@@ -77,7 +77,7 @@ export default {
             .then((result) => {
               console.log(result);
               this.addPostVisible = false;
-              this.$emit("added", result.data);
+              this.$emit("added");
             });
           console.log("Received values of form: ", values);
         }
