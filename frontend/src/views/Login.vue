@@ -160,13 +160,16 @@ export default {
       }
         this.axios.post("http://127.0.0.1:8000/api/user/signin", values).then(result=>{
           this.loading = false;
+          console.log(result)
 
-          if(result.data.length > 0){
+           if(result.data.length > 0){
             console.log(result)
             this.$session.set("logged_in", true);
             this.$session.set("user", result.data[0]);
             this.$router.replace("/");
           //  check status and if user obj has data if yes go on
+          }else{
+            this.$message.error("Wrong email/password");
           }
         })
       }else if(!this.sign_in && validated) {
@@ -188,6 +191,9 @@ export default {
             this.$session.set("user", result.data);
             this.$router.replace("/");
             //  check status and if user obj has data if yes go on
+          }else if(result.data.message){
+            this.$message.error(result.data.message);
+
           }
         })
         console.log(values);

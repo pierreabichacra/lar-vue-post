@@ -46,8 +46,17 @@ export default {
     };
   },
   methods: {
+    checkLogin(){
+      let logged_in = this.$session.get('logged_in')
+      if(!logged_in){
+        this.$session.start()
+        this.$router.push({ name: 'Login' }).catch(()=>{})
+      }
+    }
   },
   created: function(){
+    this.checkLogin();
+
     if(this.$route.params.post){
       this.post = this.$route.params.post;
       this.$session.set("backup", this.post);

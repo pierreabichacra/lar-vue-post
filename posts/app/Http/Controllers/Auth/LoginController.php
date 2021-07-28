@@ -47,8 +47,8 @@ class LoginController extends Controller
                 ->where('email', $request->user['email'])
                 ->where('password', $request->user['password'])
                 ->get();
-        unset($user[0]->password);
-        return $user;
+                return $user;
+      
     }
 
         public function signup(Request $request)
@@ -57,7 +57,7 @@ class LoginController extends Controller
         $user = DB::table('users')->where('email',  $request->user['email'])->first();
 
         if($user){
-            return response()->json(["message"=> "User already exists "], 400);
+            return response()->json(["message"=> "User already exists "], 200);
         }else{
             $newUser = new User;
             $newUser->name = $request->user['name'];

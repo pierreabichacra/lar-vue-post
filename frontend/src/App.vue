@@ -3,7 +3,7 @@
     <v-app-bar app>
       <!-- -->
       <div class=" row d-flex align-items-center">
-        <div class="col-1" v-if="$route.name.toLowerCase() !== 'home'">
+        <div class="col-1" v-if="$route.name.toLowerCase() !== 'home' && $route.name.toLowerCase() !== 'login'">
           <a-icon style="font-size: 25px; cursor: pointer;" type="arrow-left" @click="$router.go(-1)" />
         </div>
         <div class="col-9 mt-4" style="text-align: start">
@@ -12,7 +12,7 @@
         </div>
         <div class="col-1" v-if="$route.name.toLowerCase() == 'home'"></div>
         <div class="col-2" style="text-align: end">
-          <a-icon type="logout" style="font-size: 25px;" @click="logout"/>
+          <a-icon type="logout" style="font-size: 25px;" @click="logout" v-if="$session.get('logged_in')"/>
         </div>
       </div>
     </v-app-bar>
